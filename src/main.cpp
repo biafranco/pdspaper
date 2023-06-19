@@ -1,30 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <getopt.h>
+#include <string.h>
 #include <iostream>
-#include <fstream>
-#include <string>
 #include <vector>
+#include <sstream>
+#include "database.h"
 
 using namespace std;
 
 int main() {
-    vector<string> nomesArquivos = {"d1.txt", "d2.txt", "d3.txt"};
-    vector<string> arquivosTexto;
 
-    for (const string& nomeArquivo : nomesArquivos) {
-        ifstream arquivo(nomeArquivo);
+    Database test = Database("./teste_documentos");
+    string frase;
+    vector<string> pesquisa;
+    cout << "pesquisa: ";
+    getline(cin, frase);
 
-        if (arquivo.is_open()) {
-            string conteudo;
-            getline(arquivo, conteudo);
+    string palavra;
+    istringstream iss(frase);
 
-            arquivosTexto.push_back(conteudo);
-
-            arquivo.close();
-        } 
+    while (iss >> palavra) {
+        pesquisa.push_back(palavra);
     }
-
-    for (int i = 0; i < arquivosTexto.size(); i++) {
-        cout << arquivosTexto[i] << endl;
-    }
-
-    return 0;
+    
+    test.pesquisa(pesquisa);
+}
 }
