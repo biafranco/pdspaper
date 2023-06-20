@@ -3,9 +3,6 @@
 #include <sstream>
 
 #include "../include/database.h"
-#include <iostream>
-=======
-#include "database.h"
 
 using namespace std;
 
