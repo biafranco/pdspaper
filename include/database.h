@@ -16,6 +16,8 @@ class Database {
  public:
   Database(string path);
 
+  void processTextFile(const string& arquivo);
+
   string normalize(string input);
 
   void pesquisa(vector<string> palavras);
