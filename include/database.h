@@ -12,17 +12,27 @@
 
 using namespace std;
 
+  struct ComparaPar {
+    bool operator()(const pair<string, int>& p1, const pair<string, int>& p2) const {
+        if (p1.second != p2.second) {
+            return p1.second < p2.second; 
+        }
+        return p1.first > p2.first; 
+    }
+};
+
 class Database {
  public:
   Database(string path);
 
-  void processTextFile(const string& arquivo);
+  void ProcessTextFile(const string& arquivo);
 
-  string normalize(string input);
+  string Normaliza(string input);
 
-  void pesquisa(vector<string> palavras);
+  void Pesquisa(vector<string> palavras);
 
   ~Database();
+
 
  private:
   map<string, map<string, int>> _indice;

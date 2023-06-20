@@ -22,7 +22,7 @@ int main(){
         searchArray.push_back(word);
     }
     
-    data.pesquisa(searchArray);
+    data.Pesquisa(searchArray);
     return 0;
 }
 
