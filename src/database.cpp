@@ -91,8 +91,3 @@ string Database::normalize(string texto) {
     
     return normalizada;
 }
-
-void Database::pesquisa(vector<string> palavras){}
-
-Database::~Database(){
-}
