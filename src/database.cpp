@@ -17,25 +17,31 @@ Database::Database(string path){
    // principal. Ela contém informações sobre o nome do arquivo, tipo de 
    // arquivo, tamanho, entre outras propriedades.
 
-    DIR *pasta;
-        struct dirent *entrada;
+    DIR* pasta = opendir(path.c_str());
+        
+        if (pasta == nullptr) {
+                return;
+            }
 
-        //Abre o diretório
-       if ((pasta = opendir(path.c_str())) != nullptr) {
-        // Lê cada arquivo presente no diretório
+        struct dirent *entrada;
+        
+        while ((entrada = readdir(pasta)) != nullptr) {
+        // Ignora os diretórios pai e atual
+        if (strcmp(entrada->d_name, ".") == 0 || strcmp(entrada->d_name, "..") == 0) {
+            continue;
+        }
+
         while ((entrada = readdir(pasta)) != nullptr) {
             string arquivo = path + "/" + entrada->d_name;
-            processTextFile(arquivo);
+            ProcessTextFile(arquivo);
         }
         // Fecha o diretório
         closedir(pasta);
        
-       } else {
-        cerr << "Erro ao abrir o diretório: " << path << endl;
        }
 }
 
-void Database::processTextFile(const string& arquivo) {
+void Database::ProcessTextFile(const string& arquivo) {
      
      ifstream file(arquivo);
      if (file.is_open()) {
@@ -46,7 +52,7 @@ void Database::processTextFile(const string& arquivo) {
 
         while (getline(file, line)) {
            
-            string textoNormalizado = normalize(line);
+            string textoNormalizado = Normaliza(line);
             arquivoTemp << textoNormalizado << endl; 
         }
         // Fechar os arquivos
@@ -66,7 +72,7 @@ void Database::processTextFile(const string& arquivo) {
 }
 
 
-string Database::normalize(string texto) {
+string Database::Normaliza(string texto) {
 
     //ASCII 65-90 Maiusculas
     //ASCII 97-122 Minusculas
@@ -90,4 +96,41 @@ string Database::normalize(string texto) {
     };
     
     return normalizada;
+}
+
+void Database::Pesquisa(vector<string> palavras){
+    map<string, int> indicePalavra = this->_indice[palavras[0]];
+    vector<string> deletadas;
+    map<string, int>::iterator it;
+
+    priority_queue<pair<string, int>, vector<pair<string, int>>, ComparaPar> filaPrioridade;
+
+    for(int i = 1; i < (int)palavras.size(); i++){
+
+        for (it = indicePalavra.begin(); it != indicePalavra.end(); ++it) {
+            filaPrioridade.push(make_pair(it->first, it->second));
+
+            if (this->_indice[palavras[i]].find(it->first) != this->_indice[palavras[i]].end()) {
+                it->second += this->_indice[palavras[i]][it->first];
+            } 
+            else {
+                deletadas.insert(deletadas.begin(), it->first);
+            }
+        }
+
+        for(int j = 0; j < (int)deletadas.size(); j++){
+            indicePalavra.erase(deletadas[j]);
+        }
+
+        deletadas.clear();
+    }
+
+    while(!filaPrioridade.empty()){
+        cout << filaPrioridade.top().first << endl;
+        filaPrioridade.pop();
+    }
+}
+
+Database::~Database(){
+
 }

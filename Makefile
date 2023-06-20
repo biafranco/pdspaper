@@ -8,15 +8,18 @@
 ## $<       primeira dependencia
 ## $@       o alvo
 
-CC := g++
-I = -I include
+CC = g++
+LIBS = -lm
+SRC = src
+OBJ = obj
+INC = include
+BIN = bin
 
-MAIN := ./src/main.cpp
-DATA := ./src/database.cpp
-INC := ./include/database.h
-BLD := ./build
+OBJS = $(OBJ)/database.o $(OBJ)/main.o
 
-OBJ = $(BLD)/database.o $(BLD)/main.o
+HDRS = $(INC)/database.h
+
+CFLAGS = -pg -Wall -c -I$(INC)
 
 all: programa
 
@@ -24,11 +27,16 @@ programa: $(OBJ)
 	$(CC) $(OBJ) -o tp_execution
 
 
-$(BLD)/database.o:	$(DATA) $(INC)
-	$(CC) $(I) -c $< -o $@
+$(OBJ)/database.o: $(HDRS) $(SRC)/database.cpp
+	$(CC) $(CFLAGS) -o $(OBJ)/database.o $(SRC)/database.cpp
 
-$(BLD)/main.o:	$(MAIN)
-	$(CC) $(I) -c $^ -o $@ 
+$(OBJ)/main.o: $(HDRS) $(SRC)/main.cpp
+	$(CC) $(CFLAGS) -o $(OBJ)/main.o $(SRC)/main.cpp
+
+clean:
+rm $(OBJ)/*.o $(BIN)/tp0.exe
 
 ## É algo parecido com isso
-## PRECISA TESTAR
+## PRECISA TESTAR 
+## tbm não testei
+
