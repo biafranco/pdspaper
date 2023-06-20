@@ -99,34 +99,35 @@ string Database::Normaliza(string texto) {
 }
 
 void Database::Pesquisa(vector<string> palavras){
-    map<string, int> base = this->_indice[palavras[0]];
-    vector<string> deleta;
+    map<string, int> indicePalavra = this->_indice[palavras[0]];
+    vector<string> deletadas;
     map<string, int>::iterator it;
 
+    priority_queue<pair<string, int>, vector<pair<string, int>>, ComparaPar> filaPrioridade;
+
     for(int i = 1; i < (int)palavras.size(); i++){
-        for (it = base.begin(); it != base.end(); ++it) {
+
+        for (it = indicePalavra.begin(); it != indicePalavra.end(); ++it) {
+            filaPrioridade.push(make_pair(it->first, it->second));
+
             if (this->_indice[palavras[i]].find(it->first) != this->_indice[palavras[i]].end()) {
                 it->second += this->_indice[palavras[i]][it->first];
-            } else {
-                deleta.insert(deleta.begin(), it->first);
+            } 
+            else {
+                deletadas.insert(deletadas.begin(), it->first);
             }
         }
 
-        for(int j = 0; j < (int)deleta.size(); j++){
-            base.erase(deleta[j]);
+        for(int j = 0; j < (int)deletadas.size(); j++){
+            indicePalavra.erase(deletadas[j]);
         }
 
-        deleta.clear();
-    }
-    priority_queue<pair<string, int>, vector<pair<string, int>>, ComparaPar> priority;
-
-    for (it = base.begin(); it != base.end(); ++it) {
-        priority.push(make_pair(it->first, it->second));
+        deletadas.clear();
     }
 
-    while(!priority.empty()){
-        cout << priority.top().first << endl;
-        priority.pop();
+    while(!filaPrioridade.empty()){
+        cout << filaPrioridade.top().first << endl;
+        filaPrioridade.pop();
     }
 }
 
