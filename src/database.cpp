@@ -41,6 +41,9 @@ void Database::ProcessTextFile(const string path, const string &nomeArquivo) {
     string line;
     int documentoID = 1;
     while (getline(file, line)) {
+      string a = line;
+       std::regex regex("[^a-zA-Z]");
+        a = std::regex_replace(line, regex, "");
       string textoNormalizado = Normaliza(line);
 
       vector<string> palavras;
@@ -61,27 +64,22 @@ void Database::ProcessTextFile(const string path, const string &nomeArquivo) {
   }
 }
 
-string RemoveAcentos(const string &palavra) {
-  char comAcentos[] = "ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
-  char semAcentos[] = "AAAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUuuuuCc";
+string RemoveAcentos(const string &texto) {
+  string a = texto;
 
-  // Substitui os caracteres acentuados por seus equivalentes sem acento
-  for (int k = 0; k < strlen(palavra); k++) {
-    for (int i = 0; i < strlen(comAcentos); i++) {
-      if (palavra[k] == comAcentos[i]) {
-        palavra[k] = semAcentos[i];
-      }
+  for (char& c : a) {
+        c = std::tolower(c);
     }
-  }
-
-  return palavraSemAcentos;
+    
+ std::regex regex("[^a-zA-Z]");
+  a = std::regex_replace(texto, regex, "");
+  return a;
 }
 
 string Database::Normaliza(string texto) {
   string normalizada;
   string noAcentos;
-
-  // noAcentos = RemoveAcentos(texto)
+  noAcentos = RemoveAcentos(texto);
 
   for (char c : texto) {
     if ((c >= 97 && c <= 122) || c == 32) {
