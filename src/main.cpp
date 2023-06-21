@@ -1,15 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-
 #include "../include/database.h"
 
 using namespace std;
 
-int main(){
-   
-    Database data = Database("./teste_doc");
-    string input;                   //entrada do usuário
+int main() {
+    Database data = Database("pdspaper/documentos");
+    string input;                   // entrada do usuário
     
     vector<string> searchArray;
     cout << "Digite palavras para pesquisar: ";
@@ -21,9 +19,7 @@ int main(){
     while (iss >> word) {
         searchArray.push_back(word);
     }
-    
+
     data.Pesquisa(searchArray);
     return 0;
 }
-
-

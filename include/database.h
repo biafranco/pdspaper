@@ -1,18 +1,18 @@
-#ifndef DATABASE_H_ 
+#ifndef DATABASE_H_
 #define DATABASE_H_
 
 #include <iostream>
 #include <cstring>
 #include <map>
+#include <set>
 #include <dirent.h>
 #include <fstream>
 #include <vector>
 #include <queue>
 
-
 using namespace std;
 
-  struct ComparaPar {
+struct ComparaPar {
     bool operator()(const pair<string, int>& p1, const pair<string, int>& p2) const {
         if (p1.second != p2.second) {
             return p1.second < p2.second; 
@@ -22,20 +22,22 @@ using namespace std;
 };
 
 class Database {
- public:
-  Database(string path);
+public:
+    Database(string path);
 
-  void ProcessTextFile(const string& arquivo);
+    void ProcessTextFile(const string& arquivo);
 
-  string Normaliza(string input);
+    string Normaliza(string input);
 
-  void Pesquisa(vector<string> palavras);
+    void Pesquisa(const vector<string>& palavras);
 
-  ~Database();
+    int pegaIndicePalRep(const string& palavra, const string& arquivo);
+
+    ~Database();
 
 
- private:
-  map<string, map<string, int>> _indice;
+private:
+   map<string, map<string, int>> _indice;
 };
 
 #endif
