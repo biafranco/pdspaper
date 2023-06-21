@@ -8,6 +8,7 @@ using namespace std;
 int main() {
     Database data = Database("pdspaper/documentos");
     string input;                   // entrada do usuário
+
     
     vector<string> searchArray;
     cout << "Digite palavras para pesquisar: ";

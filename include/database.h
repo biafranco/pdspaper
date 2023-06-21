@@ -26,11 +26,13 @@ class Database {
 public:
   Database(string path);
 
+
   void ProcessTextFile(const string path, const string &nomeArquivo);
 
   string Normaliza(string input);
 
   void Pesquisa(const vector<string> &palavras);
+
 
   int pegaIndicePalRep(const string &palavra, const string &nomeArquivo);
 

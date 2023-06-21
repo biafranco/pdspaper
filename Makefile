@@ -26,7 +26,6 @@ all: programa
 programa: $(OBJ)
 	$(CC) $(OBJ) -o tp_execution
 
-
 $(OBJ)/database.o: $(HDRS) $(SRC)/database.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/database.o $(SRC)/database.cpp
 
@@ -39,4 +38,5 @@ rm $(OBJ)/*.o $(BIN)/tp0.exe
 ## É algo parecido com isso
 ## PRECISA TESTAR 
 ## tbm não testei
+
 
