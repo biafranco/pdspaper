@@ -94,6 +94,7 @@ string Database::Normalize(string text) {
 
 void Database::Search(const vector<string> &words) {
   for (const auto &word : words) {
+     cout << word << ":" << endl;
     vector<pair<string, int>> fileCounts(_index[word].begin(),
                                          _index[word].end());
     sort(fileCounts.begin(), fileCounts.end(),
@@ -112,6 +113,7 @@ void Database::Search(const vector<string> &words) {
     }
 
     cout << endl;
+    cout << "" << endl;
   }
 }
 
