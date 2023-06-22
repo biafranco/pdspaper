@@ -23,6 +23,9 @@ $(OBJ)/database.o: $(HDRS) $(SRC)/database.cpp
 $(OBJ)/main.o: $(HDRS) $(SRC)/main.cpp 
 	$(CC) $(CFLAGS) -o $(OBJ)/main.o $(SRC)/main.cpp
 
+run: 
+	$(BIN)/TP.exe
+
 clean:
 ## Função para Linux:
 	rm -f $(OBJ)/*.o $(BIN)/TP

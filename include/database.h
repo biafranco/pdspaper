@@ -32,8 +32,6 @@ public:
 
   void Search(const vector<string> &words);
 
-  int GetWordCount(const string &word, const string &fileName);
-
   ~Database();
 
 private:
