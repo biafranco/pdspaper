@@ -6,7 +6,7 @@
 using namespace std;
 
 int main() {
-    Database data = Database("pdspaper/documentos");
+    Database data = Database("documentos");
     string input;                   // entrada do usuário
     
     vector<string> searchArray;

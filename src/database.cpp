@@ -86,9 +86,6 @@ string Database::Normaliza(string texto) {
       normalizada += c;
     } else if (c >= 65 && c <= 90) {
       normalizada += tolower(c);
-    } else if (c == 10) {
-      c = 32;
-      normalizada += c;
     }
   }
 

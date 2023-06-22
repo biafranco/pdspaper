@@ -7,7 +7,10 @@
                 "${workspaceFolder}/include"
             ],
             "defines": [],
-            "compilerPath": "D:/Arquivos de Programas/MSYS2/mingw64/bin/g++.exe",
+        // Isadora
+            "compilerPath": "C:/MinGW/bin/gcc.exe",
+        // Bianca e Enzo
+        //  "compilerPath": "D:/Arquivos de Programas/MSYS2/mingw64/bin/g++.exe",
             "cStandard": "c11",
             "cppStandard": "c++14",
             "intelliSenseMode": "gcc-x86",
