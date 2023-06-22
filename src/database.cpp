@@ -15,8 +15,13 @@ Database::Database(string path) {
   DIR *directory = opendir(path.c_str());
 
   if (directory == nullptr) {
-    cerr << "Erro ao abrir o diretório: " << path << endl;
-    return;
+    cerr << "Erro ao abrir o diretorio: " << path << endl;
+    path = "pdspaper/documentos"; // Altera o caminho para "pdspaper/documents"
+    directory = opendir(path.c_str()); // Tenta abrir o diretório alternativo
+    if (directory == nullptr) {
+      cerr << "Error ao abrir o diretorio segunda tentativa: " << path << endl;
+      return;
+    }
   }
 
   struct dirent *entry;
@@ -26,101 +31,88 @@ Database::Database(string path) {
       continue;
     }
 
-    string nomeArquivo = entry->d_name;
-    ProcessTextFile(path, nomeArquivo);
+    string fileName = entry->d_name;
+    ProcessTextFile(path, fileName);
   }
 
   closedir(directory);
 }
 
-void Database::ProcessTextFile(const string path, const string &nomeArquivo) {
+void Database::ProcessTextFile(const string path, const string &fileName) {
 
-  string caminhoArquivo = path + "/" + nomeArquivo;
-  ifstream file(caminhoArquivo);
+  string filePath = path + "/" + fileName;
+  ifstream file(filePath);
   if (file.is_open()) {
     string line;
-    int documentoID = 1;
+    int documentID = 1;
     while (getline(file, line)) {
-      string a = line;
-       std::regex regex("[^a-zA-Z]");
-        a = std::regex_replace(line, regex, "");
-      string textoNormalizado = Normaliza(line);
+      string normalizedText = Normalize(line);
 
-      vector<string> palavras;
-      istringstream iss(textoNormalizado);
-      string palavra;
+      vector<string> words;
+      istringstream iss(normalizedText);
+      string word;
 
-      while (iss >> palavra) {
-        _indice[palavra]
-               [nomeArquivo]++; // Incrementa a contagem da palavra no arquivo
+      while (iss >> word) {
+        _index[word][fileName]++; // Increment word count in the file
       }
 
-      documentoID++;
+      documentID++;
     }
 
     file.close();
   } else {
-    cerr << "Erro ao abrir o arquivo: " << nomeArquivo << endl;
+    cerr << "Erro ao abrir a pasta: " << fileName << endl;
   }
 }
 
-string RemoveAcentos(const string &texto) {
-  string a = texto;
+string RemoveAccents(const string &text) {
+  string result = text;
 
-  for (char& c : a) {
-        c = std::tolower(c);
-    }
-    
- std::regex regex("[^a-zA-Z]");
-  a = std::regex_replace(texto, regex, "");
-  return a;
+  for (char &c : result) {
+    c = std::tolower(c);
+  }
+
+  std::regex regex("[^a-zA-Z]");
+  result = std::regex_replace(text, regex, "");
+  return result;
 }
 
-string Database::Normaliza(string texto) {
-  string normalizada;
-  string noAcentos;
-  noAcentos = RemoveAcentos(texto);
+string Database::Normalize(string text) {
+  string normalized;
+  string withoutAccents = RemoveAccents(text);
 
-  for (char c : texto) {
+  for (char c : text) {
     if ((c >= 97 && c <= 122) || c == 32) {
-      normalizada += c;
+      normalized += c;
     } else if (c >= 65 && c <= 90) {
-      normalizada += tolower(c);
+      normalized += tolower(c);
     }
   }
 
-  return normalizada;
+  return normalized;
 }
 
-void Database::Pesquisa(const vector<string> &palavras) {
-  for (const auto &palavra : palavras) {
+void Database::Search(const vector<string> &words) {
+  for (const auto &word : words) {
+    vector<pair<string, int>> fileCounts(_index[word].begin(),
+                                         _index[word].end());
+    sort(fileCounts.begin(), fileCounts.end(),
+         [](const pair<string, int> &p1, const pair<string, int> &p2) {
+           if (p1.second > p2.second) {
+             return true;
+           } else if (p1.second < p2.second) {
+             return false;
+           } else {
+             return p1.first < p2.first;
+           }
+         });
 
-    cout << palavra << ":" << endl;
-    int _a = 0;
-    if (_indice[palavra].size()) {
-      for (const auto &entry : _indice[palavra]) {
-        _a++;
-        int contador = pegaIndicePalRep(palavra, entry.first);
-        cout << "(" << entry.first << ", " << contador << ")";
-        if (_a >= _indice[palavra].size())
-          cout << endl;
-        else
-          cout << ", ";
-      }
-    } else {
-      cout << "Palavra não encontrada";
+    for (const auto &fileCount : fileCounts) {
+      cout << "(" << fileCount.first << ", " << fileCount.second << "), ";
     }
-    _a = 0;
+
     cout << endl;
   }
-}
-
-int Database::pegaIndicePalRep(const string &palavra, const string &arquivo) {
-  if (_indice.find(palavra) != _indice.end() &&
-      _indice[palavra].find(arquivo) != _indice[palavra].end()) {
-    return _indice[palavra][arquivo];
-  }
-  return 0;
 }
 
 Database::~Database() {}

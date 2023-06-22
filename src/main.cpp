@@ -7,10 +7,10 @@ using namespace std;
 
 int main() {
     Database data = Database("documentos");
-    string input;                   // entrada do usuário
+    string input;                   // Entrada usuario
     
     vector<string> searchArray;
-    cout << "Digite palavras para pesquisar: ";
+    cout << "Digite as palavras para pesquisar: ";
     getline(cin, input);
 
     string word;
@@ -20,6 +20,6 @@ int main() {
         searchArray.push_back(word);
     }
 
-    data.Pesquisa(searchArray);
+    data.Search(searchArray);
     return 0;
 }

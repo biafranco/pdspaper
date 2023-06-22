@@ -12,7 +12,7 @@
 
 using namespace std;
 
-struct ComparaPar {
+struct ComparePair {
   bool operator()(const pair<string, int> &p1,
                   const pair<string, int> &p2) const {
     if (p1.second != p2.second) {
@@ -26,18 +26,18 @@ class Database {
 public:
   Database(string path);
 
-  void ProcessTextFile(const string path, const string &nomeArquivo);
+  void ProcessTextFile(const string path, const string &fileName);
 
-  string Normaliza(string input);
+  string Normalize(string input);
 
-  void Pesquisa(const vector<string> &palavras);
+  void Search(const vector<string> &words);
 
-  int pegaIndicePalRep(const string &palavra, const string &nomeArquivo);
+  int GetWordCount(const string &word, const string &fileName);
 
   ~Database();
 
 private:
-  map<string, map<string, int>> _indice;
+  map<string, map<string, int>> _index;
 };
 
 #endif
