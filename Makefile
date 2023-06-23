@@ -28,8 +28,8 @@ run:
 
 clean:
 ## Função para Linux:
-	rm -f $(OBJ)/*.o $(BIN)/TP
+##	rm -f $(OBJ)/*.o $(BIN)/TP
 
 ## Função para Windows:
-##	del /Q $(OBJ)\*.o 
-##	del /Q $(BIN)\TP.exe
+	del /Q $(OBJ)\*.o 
+	del /Q $(BIN)\TP.exe
